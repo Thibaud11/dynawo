@@ -728,6 +728,11 @@ build_3rd_party_version() {
     else
       LIBARCHIVE_OPTION=""
     fi
+    if [ $DYNAWO_ZLIB_HOME_DEFAULT != true ]; then
+      ZLIB_OPTION="--zlib-install-dir=$DYNAWO_ZLIB_HOME"
+    else
+      ZLIB_OPTION=""
+    fi
     case "$DYNAWO_BUILD_TYPE_THIRD_PARTY" in
       Debug)
         if [ $DYNAWO_GTEST_HOME_DEFAULT != true ]; then
@@ -758,7 +763,7 @@ build_3rd_party_version() {
       --libxml-build-dir=$DYNAWO_LIBXML_BUILD_DIR \
       --libiidm-build-dir=$DYNAWO_LIBIIDM_BUILD_DIR \
       --xercesc-build-dir=$DYNAWO_XERCESC_BUILD_DIR \
-      $BOOST_OPTION $LIBARCHIVE_OPTION $GTEST_OPTION
+      $BOOST_OPTION $LIBARCHIVE_OPTION $ZLIB_OPTION $GTEST_OPTION
 
     RETURN_CODE=$?
     return ${RETURN_CODE}

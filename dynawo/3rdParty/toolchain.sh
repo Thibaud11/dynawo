@@ -78,7 +78,7 @@ compile_adept() {
 compile_libzip() {
   cd $SCRIPT_DIR/libzip
   bash libzip-chain.sh --build-dir=$LIBZIP_BUILD_DIR --install-dir=$LIBZIP_INSTALL_DIR --build-type=$BUILD_TYPE \
-    $LIBARCHIVE_OPTION $BOOST_OPTION $GTEST_OPTION
+    $LIBARCHIVE_OPTION $ZLIB_OPTION $BOOST_OPTION $GTEST_OPTION
   RETURN_CODE=$?
   return ${RETURN_CODE}
 }
@@ -182,6 +182,9 @@ while (($#)); do
       ;;
     --libarchive-install-dir=*)
       LIBARCHIVE_HOME=`echo $1 | sed -e 's/--libarchive-install-dir=//g'`
+      ;;
+    --zlib-install-dir=*)
+      ZLIB_HOME=`echo $1 | sed -e 's/--zlib-install-dir=//g'`
       ;;
     --gtest-install-dir=*)
       GTEST_HOME=`echo $1 | sed -e 's/--gtest-install-dir=//g'`
@@ -322,6 +325,11 @@ else
 fi
 if [ ! -z "$LIBARCHIVE_HOME" ]; then
   LIBARCHIVE_OPTION="--libarchive-install-dir=$LIBARCHIVE_HOME"
+else
+  LIBARCHIVE_OPTION=""
+fi
+if [ ! -z "$ZLIB_HOME" ]; then
+  ZLIB_OPTION="--zlib-install-dir=$ZLIB_HOME"
 else
   LIBARCHIVE_OPTION=""
 fi

@@ -19,7 +19,6 @@ ADD_EXECUTABLE(dumpSolver ${DUMP_SOLVER_SOURCES})
 
 TARGET_LINK_LIBRARIES(dumpSolver
     dynawo_SolverCommon
-    #pthread
     )
 
 INSTALL(TARGETS dumpSolver EXPORT dynawo-targets DESTINATION ${sbindir})

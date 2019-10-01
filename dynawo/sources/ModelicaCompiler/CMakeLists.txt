@@ -18,8 +18,6 @@ ADD_EXECUTABLE(compileModelicaModel ${COMPILER_MODELICA_OMC_SOURCES})
 TARGET_LINK_LIBRARIES(compileModelicaModel
     dynawo_Common
     ${CMAKE_DL_LIBS}
-    #pthread
-    #"-rdynamic"
     )
 
 IF(APPLE)

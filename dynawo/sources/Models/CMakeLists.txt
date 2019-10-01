@@ -187,7 +187,7 @@ MACRO(COMPILE_PREASSEMBLED_MODEL
             ${CMAKE_COMMAND} -E env
                 "${runtime_PATH}"
                 "${runtime_LD_LIBRARY_PATH}"
-                    $<TARGET_FILE:dumpModel> -m ${MODEL_NAME}${CMAKE_SHARED_LIBRARY_SUFFIX} -o ${MODEL_NAME}${DESCRIPTION_XML_EXTENSION}
+                  $<TARGET_FILE:dumpModel> -m ${CMAKE_CURRENT_BINARY_DIR}/${MODEL_NAME}${CMAKE_SHARED_LIBRARY_SUFFIX} -o ${MODEL_NAME}${DESCRIPTION_XML_EXTENSION}
         COMMENT "Generating ${MODEL_NAME} description file"
         )
 
