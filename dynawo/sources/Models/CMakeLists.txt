@@ -132,35 +132,16 @@ MACRO(COMPILE_PREASSEMBLED_MODEL
     GET_FILENAME_COMPONENT(MODEL_NAME ${PREASSEMBLED_MODEL} NAME_WE)
 
     #
-    # Generates .dep file for the preassembled model
-    #
-#    ADD_CUSTOM_TARGET(${MODEL_NAME}_DEPCHECKER
-#                       COMMAND python ${CMAKE_CURRENT_SOURCE_DIR}/depChecker.py ${CMAKE_CURRENT_SOURCE_DIR}/${PREASSEMBLED_MODEL} ${MODEL_NAME}.dep
-#                       COMMENT "Checking ${MODEL_NAME} dependencies"
-#                      )
-
-    #
-    # Custom command used to deal with .dep generated file dependency
-    #
-#    ADD_CUSTOM_COMMAND(OUTPUT ${CMAKE_CURRENT_BINARY_DIR}/${MODEL_NAME}.dep
-#                       DEPENDS
-#                           ${MODEL_NAME}_DEPCHECKER
-#                      )
-
-    #
-    # Builds the preassembled model if .dep file shows
-    # it has been modified
+    # Builds the preassembled model
     #
     ADD_CUSTOM_COMMAND(OUTPUT ${MODEL_NAME}${CMAKE_SHARED_LIBRARY_SUFFIX}
                        DEPENDS
                            ${PREASSEMBLED_MODEL}
-#                           ${MODEL_NAME}_DEPCHECKER
-#                           ${CMAKE_CURRENT_BINARY_DIR}/${MODEL_NAME}.dep
                            generate-preassembled
                            MODEL_FILES_INSTALL
                            EXTERNAL_VARIABLES_FLATTENING
                        COMMAND
-                           python ${CMAKE_CURRENT_SOURCE_DIR}/buildChecker.py ${CMAKE_CURRENT_SOURCE_DIR}/${PREASSEMBLED_MODEL} > ${MODEL_NAME}.log 2>&1 ||
+                           ${PYTHON_COMMAND} ${CMAKE_CURRENT_SOURCE_DIR}/buildChecker.py ${CMAKE_CURRENT_SOURCE_DIR}/${PREASSEMBLED_MODEL} > ${MODEL_NAME}.log 2>&1 ||
                            (echo "*** [${MODEL_NAME}] Error : for more information see file ${CMAKE_CURRENT_BINARY_DIR}/${MODEL_NAME}.log" && exit -1)
                        COMMAND
                            ${bindir}/launcher --generate-preassembled --model-list ${CMAKE_CURRENT_SOURCE_DIR}/${PREASSEMBLED_MODEL} --output-dir ${CMAKE_CURRENT_BINARY_DIR} --remove-model-files true >> ${MODEL_NAME}.log 2>&1 ||
@@ -184,7 +165,6 @@ MACRO(COMPILE_PREASSEMBLED_MODEL
     #
     ADD_CUSTOM_TARGET(${MODEL_NAME}
                       DEPENDS
-#                          ${MODEL_NAME}.dep
                           ${MODEL_NAME}${CMAKE_SHARED_LIBRARY_SUFFIX}
                           ${MODEL_NAME}.desc.xml
                           ${MODEL_NAME}.extvar
@@ -221,7 +201,7 @@ MACRO(COMPILE_CPP_MODEL
     ADD_CUSTOM_TARGET(${CPP_MODEL}_HPP
                        COMMAND
                          ${CMAKE_COMMAND} -E remove ${CMAKE_CURRENT_SOURCE_DIR}/${CPP_MODEL}.hpp \;
-                         python ${CMAKE_CURRENT_SOURCE_DIR}/../../checkSum_ModelsCPP.py -m ${CMAKE_CURRENT_SOURCE_DIR}/${CPP_MODEL} 2>&1 ||
+                         ${PYTHON_COMMAND} ${CMAKE_CURRENT_SOURCE_DIR}/../../checkSum_ModelsCPP.py -m ${CMAKE_CURRENT_SOURCE_DIR}/${CPP_MODEL} 2>&1 ||
                          (echo "*** [${CPP_MODEL}] Error : for more information see previous log" && exit -1)
                        COMMENT "Creating checkSum for ${CPP_MODEL}"
                       )

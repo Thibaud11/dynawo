@@ -367,6 +367,7 @@ set_environment() {
   export_var_env_force DYNAWO_NRT_DIFF_DIR=$DYNAWO_HOME/util/nrt_diff
   export_var_env_force DYNAWO_ENV_DYNAWO=$SCRIPT
   export_var_env DYNAWO_CMAKE_GENERATOR="Unix Makefiles"
+  export_var_env DYNAWO_PYTHON_COMMAND="python"
   CMAKE_VERSION=$(cmake --version | head -1 | awk '{print $(NF)}')
   CMAKE_BUILD_OPTION=""
   if [ $(echo $CMAKE_VERSION | cut -d '.' -f 1) -ge 3 -a $(echo $CMAKE_VERSION | cut -d '.' -f 2) -ge 12 ]; then
@@ -876,6 +877,7 @@ config_dynawo() {
     -DSUITESPARSE_HOME=$DYNAWO_SUITESPARSE_INSTALL_DIR \
     -DNICSLU_HOME=$DYNAWO_NICSLU_INSTALL_DIR \
     -DLIBZIP_HOME=$DYNAWO_LIBZIP_INSTALL_DIR \
+    -DDYNAWO_PYTHON_COMMAND="$DYNAWO_PYTHON_COMMAND" \
     $CMAKE_OPTIONNAL \
     -G "$DYNAWO_CMAKE_GENERATOR" \
     "-DCMAKE_PREFIX_PATH=$DYNAWO_LIBXML_HOME;$DYNAWO_LIBIIDM_HOME" \
@@ -1312,7 +1314,7 @@ jobs_with_curves() {
 
 curves_visu() {
   verify_browser
-  python $DYNAWO_CURVES_TO_HTML_DIR/curvesToHtml.py --jobsFile=$(python -c "import os; print(os.path.realpath('$1'))") --withoutOffset --htmlBrowser="$DYNAWO_BROWSER" || return 1
+  $DYNAWO_PYTHON_COMMAND $DYNAWO_CURVES_TO_HTML_DIR/curvesToHtml.py --jobsFile=$(python -c "import os; print(os.path.realpath('$1'))") --withoutOffset --htmlBrowser="$DYNAWO_BROWSER" || return 1
 }
 
 dump_model() {
@@ -1375,7 +1377,7 @@ nrt() {
   if ! is_launcher_installed; then
     install_launcher || error_exit "Error during launcher installation."
   fi
-  python -u $DYNAWO_NRT_DIR/nrt.py $@
+  $DYNAWO_PYTHON_COMMAND -u $DYNAWO_NRT_DIR/nrt.py $@
   FAILED_CASES_NUM=$?
 
   jenkins_mode=$(printenv | grep "DYNAWO_JENKINS_MODE" | wc -l)
@@ -1400,11 +1402,11 @@ nrt() {
 }
 
 nrt_diff() {
-  python $DYNAWO_NRT_DIFF_DIR/nrtDiff.py $@
+  $DYNAWO_PYTHON_COMMAND $DYNAWO_NRT_DIFF_DIR/nrtDiff.py $@
 }
 
 nrt_ref() {
-  python $DYNAWO_NRT_DIFF_DIR/defineTestReference.py $@
+  $DYNAWO_PYTHON_COMMAND $DYNAWO_NRT_DIFF_DIR/defineTestReference.py $@
 }
 
 check_coding_files() {

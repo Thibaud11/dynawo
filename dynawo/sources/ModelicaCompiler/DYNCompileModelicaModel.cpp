@@ -212,6 +212,7 @@ modelicaCompile(const string& modelName, const string& outputDir,
         const vector<string>&  initFiles, const vector<string>& moFiles, bool& withInitFile, const string& packageName, bool noInit) {
   string outputDir1 = prettyPath(outputDir);
   string scriptsDir1 = getEnvVar("DYNAWO_SCRIPTS_DIR");
+  string pythonCmd = getEnvVar("DYNAWO_PYTHON_COMMAND");
 
   // input FILES
   string moFile = absolute(modelName + ".mo", outputDir1);
@@ -226,7 +227,7 @@ modelicaCompile(const string& modelName, const string& outputDir,
 
   // We pass the scriptVarExt.py on the .mo compilation
   std::cout << " Creation of " << moFile << " file with external variables" << std::endl;
-  string varExtCommand = "python " + scriptsDir1 + "/scriptVarExt.py --fileVarExt=\"" + extVarFile + "\" --file=\"" + moFile + "\" --pre";
+  string varExtCommand = pythonCmd + " " + scriptsDir1 + "/scriptVarExt.py --fileVarExt=\"" + extVarFile + "\" --file=\"" + moFile + "\" --pre";
 
   bool doPrintLogs = true;
   string result = executeCommand(varExtCommand, doPrintLogs);
@@ -383,7 +384,8 @@ compileModelicaToXML(const string& modelName, const string& fileToCompile, const
 void
 generateModelFile(const string& modelName, const string& outputDir, bool& withInitFile, const string& additionalHeaderList, const string& packageName) {
   string scriptsDir1 = getEnvVar("DYNAWO_SCRIPTS_DIR");
-  string varExtCommand = "python " + scriptsDir1 + "/writeModel.py -m " + packageName + modelName + " -i " + outputDir + " -o " + outputDir;
+  string pythonCmd = getEnvVar("DYNAWO_PYTHON_COMMAND");
+  string varExtCommand = pythonCmd + " " + scriptsDir1 + "/writeModel.py -m " + packageName + modelName + " -i " + outputDir + " -o " + outputDir;
   if (!additionalHeaderList.empty())
     varExtCommand += " -a " + additionalHeaderList;
   if (withInitFile)

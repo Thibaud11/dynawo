@@ -27,14 +27,14 @@ SET(DYNAWO_DICTIONARIES_MAPPING
   )
 
 
-# custom target to generate files associated to dictionnaries
+# custom target to generate files associated to dictionaries
 ADD_CUSTOM_TARGET( create_keys_files ALL
                   DEPENDS ${DYNAWO_DICTIONARIES})
 
 ADD_CUSTOM_COMMAND(TARGET create_keys_files
   WORKING_DIRECTORY ${CMAKE_CURRENT_SOURCE_DIR}
-  COMMAND python ${CMAKE_CURRENT_SOURCE_DIR}/Dictionaries/validateDictionaries.py --inputDir=${CMAKE_CURRENT_SOURCE_DIR}/Dictionaries,${CMAKE_DYN_DICTIONARY_PATHS} --outputDir=${CMAKE_CURRENT_SOURCE_DIR} --modelicaPackage=Dynawo.NonElectrical.Logs --modelicaDir=${CMAKE_CURRENT_SOURCE_DIR}/../Models/Modelica/Dynawo/NonElectrical/Logs/
-  COMMENT "Generate key files for dictionnaries"
+  COMMAND ${PYTHON_COMMAND} ${CMAKE_CURRENT_SOURCE_DIR}/Dictionaries/validateDictionaries.py --inputDir=${CMAKE_CURRENT_SOURCE_DIR}/Dictionaries,${CMAKE_DYN_DICTIONARY_PATHS} --outputDir=${CMAKE_CURRENT_SOURCE_DIR} --modelicaPackage=Dynawo.NonElectrical.Logs --modelicaDir=${CMAKE_CURRENT_SOURCE_DIR}/../Models/Modelica/Dynawo/NonElectrical/Logs/
+  COMMENT "Generate key files for dictionaries"
   )
 
 # Find keys.cpp files (generated files)

@@ -260,10 +260,11 @@ std::string verifyModelListFile(std::string modelList) {
   string dydFileName = "";
   dydFileName = modelList + "_bak";
   string scriptsDir1 = getEnvVar("DYNAWO_SCRIPTS_DIR");
+  string pythonCmd = getEnvVar("DYNAWO_PYTHON_COMMAND");
 
   // scriptVerifyModelList.py
   std::cout << "Create file: " << dydFileName << std::endl;
-  string verifymodellistcommand = "python " + scriptsDir1 + "/scriptVerifyModelList.py --dyd=" + dydFileName + " --model=" + modelList;
+  string verifymodellistcommand = pythonCmd + " " + scriptsDir1 + "/scriptVerifyModelList.py --dyd=" + dydFileName + " --model=" + modelList;
   executeCommand1(verifymodellistcommand);
   return dydFileName;
 }
