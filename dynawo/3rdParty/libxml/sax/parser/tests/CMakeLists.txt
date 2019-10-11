@@ -81,7 +81,7 @@ foreach(TEST IN LISTS PARSER_TESTS)
   target_link_libraries(${TEST}
     XMLSAXParser${LINK_SUFFIX_TEST}
     ${GTEST_BOTH_LIBRARIES}
-    $<$<CXX_COMPILER_ID:GNU>:pthread>
+    $<$<NOT:$<CXX_COMPILER_ID:MSVC>>:pthread>
   )
 
   add_custom_target(test-${TEST}

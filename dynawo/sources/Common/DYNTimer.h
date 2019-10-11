@@ -103,11 +103,6 @@ class Timer : private boost::noncopyable {
   ~Timer();
 
   /**
-   * @brief start the timer
-   */
-  void start();
-
-  /**
    * @brief stop the timer
    */
   void stop();

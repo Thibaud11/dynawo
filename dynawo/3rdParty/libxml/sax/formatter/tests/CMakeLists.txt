@@ -65,7 +65,7 @@ foreach(TEST IN LISTS FORMATTER_TESTS)
   target_link_libraries(${TEST}
     XMLSAXFormatter${LINK_SUFFIX_TEST}
     ${GTEST_BOTH_LIBRARIES}
-    $<$<CXX_COMPILER_ID:GNU>:pthread>
+    $<$<NOT:$<CXX_COMPILER_ID:MSVC>>:pthread>
   )
 
   add_custom_target(test-${TEST}

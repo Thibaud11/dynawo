@@ -399,8 +399,6 @@ set_environment() {
   set_standard_environment_variables
 
   set_commit_hook
-
-  set_cpplint
 }
 
 ld_library_path_remove() {
@@ -585,33 +583,6 @@ git diff-index --check --cached HEAD -- ':(exclude)*/reference/*' ':(exclude)*.p
   if [ -e "$DYNAWO_HOME/.git" ]; then
     if [ "$(git config --get core.commentchar)" = "#" ]; then
       git config core.commentchar % || error_exit "You need to change git config commentchar from # to %."
-    fi
-  fi
-}
-
-set_cpplint() {
-  export_var_env DYNAWO_CPPLINT_DOWNLOAD_URL=https://github.com/cpplint/cpplint/archive
-  CPPLINT_VERSION=1.3.0
-  CPPLINT_ARCHIVE=$CPPLINT_VERSION.tar.gz
-
-  CPPLINT_FILE=cpplint.py
-  CPPLINT_DIR=$DYNAWO_HOME/cpplint
-
-  if [ ! -f "$CPPLINT_DIR/$CPPLINT_FILE" ]; then
-    if [ -x "$(command -v wget)" ]; then
-      wget --timeout 10 --tries 3 ${DYNAWO_CPPLINT_DOWNLOAD_URL}/${CPPLINT_ARCHIVE} -P "$CPPLINT_DIR" > /dev/null 2>&1 || error_exit "Error while downloading cpplint."
-    elif [ -x "$(command -v curl)" ]; then
-      curl -L --connect-timeout 10 --retry 2 ${DYNAWO_CPPLINT_DOWNLOAD_URL}/${CPPLINT_ARCHIVE} --output "$CPPLINT_DIR/$CPPLINT_ARCHIVE" > /dev/null 2>&1 || error_exit "Error while downloading cpplint."
-    else
-      error_exit "You need to install either wget or curl."
-    fi
-    if [ -x "$(command -v tar)" ]; then
-      tar xzf "$CPPLINT_DIR/$CPPLINT_ARCHIVE" -C $CPPLINT_DIR
-      cp "$CPPLINT_DIR/cpplint-$CPPLINT_VERSION/$CPPLINT_FILE" "$CPPLINT_DIR/$CPPLINT_FILE"
-      rm -rf "$CPPLINT_DIR/cpplint-$CPPLINT_VERSION"
-      rm -f "$CPPLINT_DIR/$CPPLINT_ARCHIVE"
-    else
-      error_exit "You need to install tar command line utility."
     fi
   fi
 }

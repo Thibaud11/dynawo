@@ -9,7 +9,17 @@
 # This file is part of Dynawo, an hybrid C++/Modelica open source time domain simulation tool for power systems.
 
 # Minimum required (for ExternalProject_Add)
-CMAKE_MINIMUM_REQUIRED(VERSION 2.8 FATAL_ERROR)
+CMAKE_MINIMUM_REQUIRED(VERSION 3.9.6 FATAL_ERROR)
+
+if(POLICY CMP0074)
+  cmake_policy(SET CMP0074 NEW)
+endif()
+
+if(${CMAKE_VERSION} VERSION_GREATER "3.15.0")
+  if(POLICY CMP0091)
+    cmake_policy(SET CMP0091 NEW)
+  endif()
+endif()
 
 # Add custom cmake modules to the path
 SET(CMAKE_MODULE_PATH "${CMAKE_CURRENT_SOURCE_DIR}/cmake")
@@ -23,10 +33,25 @@ SET(DYNAWO_VERSION_STRING ${DYNAWO_VERSION_MAJOR}.${DYNAWO_VERSION_MINOR}.${DYNA
 
 SET(LIBRARY_TYPE SHARED CACHE STRING "Choose either STATIC or SHARED.")
 SET(BOOST_USE_STATIC OFF CACHE BOOL "Choose either ON or OFF.")
+SET(MSVC_STATIC_RUNTIME_LIBRARY OFF CACHE BOOL "Choose either ON or OFF.")
 
 SET(CMAKE_WINDOWS_EXPORT_ALL_SYMBOLS ON)    # export all symbols from dll on Windows
 SET(CMAKE_ENABLE_EXPORTS ON)                # export all symbols from exe on Windows
 SET(CMAKE_POSITION_INDEPENDENT_CODE ON)     # set -fPIC on Linux
+
+if(DEFINED DYNAWO_THIRD_PARTY_DIR)
+  GET_FILENAME_COMPONENT(DYNAWO_THIRD_PARTY_DIR ${DYNAWO_THIRD_PARTY_DIR} ABSOLUTE)
+  set(ADEPT_HOME ${DYNAWO_THIRD_PARTY_DIR}/adept CACHE PATH "Path where an Adept installation already exists")
+  set(SUITESPARSE_HOME ${DYNAWO_THIRD_PARTY_DIR}/suitesparse CACHE PATH "Path where an Adept installation already exists")
+  set(SUNDIALS_HOME ${DYNAWO_THIRD_PARTY_DIR}/sundials CACHE PATH "Path where an Adept installation already exists")
+  set(LIBZIP_HOME ${DYNAWO_THIRD_PARTY_DIR}/libzip CACHE PATH "Path where an Adept installation already exists")
+  set(BOOST_ROOT ${DYNAWO_THIRD_PARTY_DIR}/boost CACHE PATH "Path where a Boost installation already exists")
+  set(GTEST_ROOT ${DYNAWO_THIRD_PARTY_DIR}/googletest CACHE PATH "Path where a GoogleTest installation already exists")
+  set(LIBARCHIVE_HOME ${DYNAWO_THIRD_PARTY_DIR}/libarchive CACHE PATH "Path where a LibArchive installation already exists")
+  set(ZLIB_ROOT ${DYNAWO_THIRD_PARTY_DIR}/zlib CACHE PATH "Path where a ZLib installation already exists")
+endif()
+
+GET_FILENAME_COMPONENT(DYNAWO_HOME ${DYNAWO_HOME} ABSOLUTE)
 
 # Set directories name
 SET(BINDIR_NAME bin)
@@ -48,7 +73,9 @@ GET_FILENAME_COMPONENT(sbindir ${CMAKE_INSTALL_PREFIX}/${SBINDIR_NAME} ABSOLUTE)
 GET_FILENAME_COMPONENT(ddbdir ${CMAKE_INSTALL_PREFIX}/${DDBDIR_NAME} ABSOLUTE)
 
 # Use of OMC
+GET_FILENAME_COMPONENT(INSTALL_OPENMODELICA ${INSTALL_OPENMODELICA} ABSOLUTE)
 SET(OMC_INCLUDE_DIR ${INSTALL_OPENMODELICA}/include/omc/c)
+SET(OPENMODELICA_VERSION "1_13_2" CACHE STRING "Version of OpenModelica")
 
 # If C++11 is enabled, check flags availability
 SET(CXX11_ENABLED ${CXX11_ENABLED} CACHE BOOL "")
@@ -59,6 +86,11 @@ IF(MSVC)
 
     FIND_PACKAGE(dlfcn-win32 REQUIRED)
     SET(CMAKE_DL_LIBS dlfcn-win32::dl)
+    if(LIBRARY_TYPE STREQUAL "STATIC")
+      if(MSVC_STATIC_RUNTIME_LIBRARY)
+        set(CMAKE_MSVC_RUNTIME_LIBRARY "MultiThreaded$<$<CONFIG:Debug>:Debug>")
+      endif()
+    endif()
 
 ELSEIF(CXX11_ENABLED)
     # Test if a C++11 flag is supported
@@ -163,7 +195,7 @@ ENDIF()
 ADD_DEFINITIONS(-D_DYNAWO_)
 
 # For ADEPT
-SET(USE_ADEPT ${USE_ADEPT} CACHE BOOL "")
+SET(USE_ADEPT ON CACHE BOOL "")
 IF(USE_ADEPT)
   FIND_PACKAGE(Adept REQUIRED)
 ENDIF(USE_ADEPT)
@@ -171,9 +203,28 @@ ENDIF(USE_ADEPT)
 # Transitive dependencies
 FIND_PACKAGE(XercesC 3.2.2 REQUIRED)
 
+if(MSVC)
+  set(CMAKE_FIND_LIBRARY_SUFFIXES_bak "${CMAKE_FIND_LIBRARY_SUFFIXES}")
+  if(LIBRARY_TYPE STREQUAL "STATIC")
+    set(CMAKE_FIND_LIBRARY_SUFFIXES "_static${CMAKE_FIND_LIBRARY_SUFFIXES_bak}")
+   endif()
+endif()
 FIND_PACKAGE(LibArchive 2.8.0 REQUIRED)
 
+if(MSVC)
+  if(LIBRARY_TYPE STREQUAL "STATIC")
+    if(CMAKE_BUILD_TYPE STREQUAL "Debug")
+      set(CMAKE_FIND_LIBRARY_SUFFIXES "staticd${CMAKE_FIND_LIBRARY_SUFFIXES_bak}")
+    else()
+      set(CMAKE_FIND_LIBRARY_SUFFIXES "static${CMAKE_FIND_LIBRARY_SUFFIXES_bak}")
+    endif()
+  endif()
+endif()
+
 FIND_PACKAGE(ZLIB 1.2.11 REQUIRED)
+if(MSVC)
+  SET(CMAKE_FIND_LIBRARY_SUFFIXES "${CMAKE_FIND_LIBRARY_SUFFIXES_bak}")
+endif()
 
 # Boost
 IF(BOOST_ROOT_DEFAULT STREQUAL "true")
@@ -218,7 +269,7 @@ FIND_PACKAGE(SuiteSparse REQUIRED)
 FIND_PACKAGE(NICSLU)
 
 IF(${NICSLU_FOUND})
-    ADD_DEFINITIONS(-DWITH_NICSLU)
+  ADD_DEFINITIONS(-DWITH_NICSLU)
 ENDIF()
 
 # Sundials

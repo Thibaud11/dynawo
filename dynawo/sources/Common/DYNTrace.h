@@ -291,7 +291,6 @@ class Trace {
    */
   static void log(SeverityLevel slv, const std::string& tag, const std::string& message);
 
-  static std::vector< TraceAppender > appenders_;  ///< Current appenders for Trace system
   friend class TraceStream;  ///< Class TraceStream must get access to @p log() private function
 };
 

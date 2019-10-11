@@ -313,7 +313,7 @@ string
 compileModelicaToC(const string& modelName, const string& fileToCompile, const vector<string>& libs, const string& outputDir, const string& packageName) {
   // Create a .mos file
   string mosFileName = "compileModelicaToC-" + modelName + ".mos";
-  ofstream mosFile(absolute(mosFileName, outputDir), ios::out | ios::trunc);
+  ofstream mosFile(absolute(mosFileName, outputDir).c_str(), ios::out | ios::trunc);
 
   // add header
   mosAddHeader(mosFileName, mosFile);
@@ -341,7 +341,7 @@ compileModelicaToXML(const string& modelName, const string& fileToCompile, const
         const string& packageName) {
   // Create a .mos file
   string mosFileName = "createStructure-" + modelName + ".mos";
-  ofstream mosFile(absolute(mosFileName, outputDir), ios::out | ios::trunc);
+  ofstream mosFile(absolute(mosFileName, outputDir).c_str(), ios::out | ios::trunc);
 
   // add header
   mosAddHeader(mosFileName, mosFile);
@@ -381,9 +381,15 @@ void
 compileLib(const string& modelName, const string& outputDir) {
   string scriptsDir = prettyPath(getEnvVar("DYNAWO_SCRIPTS_DIR"));
 
-  ofstream cmakeFile(absolute("CMakeLists.txt", outputDir), ios::out | ios::trunc);
+  ofstream cmakeFile(absolute("CMakeLists.txt", outputDir).c_str(), ios::out | ios::trunc);
 
   cmakeFile << "cmake_minimum_required(VERSION 3.9.6)" << std::endl;
+  cmakeFile << "if(${CMAKE_VERSION} VERSION_GREATER \"3.15.0\")" << std::endl;
+  cmakeFile << "  if(POLICY CMP0091)" << std::endl;
+  cmakeFile << "    cmake_policy(SET CMP0091 NEW)" << std::endl;
+  cmakeFile << "  endif()" << std::endl;
+  cmakeFile << "endif()" << std::endl;
+  cmakeFile << "PROJECT(model CXX)" << std::endl;
   cmakeFile << "include(" << boost::replace_all_copy(absolute("compileCppModelicaModelInDynamicLib.cmake", scriptsDir), "\\", "/") << ")" << std::endl;
 
   cmakeFile.close();

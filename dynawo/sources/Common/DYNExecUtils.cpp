@@ -36,13 +36,15 @@
 #include "DYNFileSystemUtils.h"
 
 #include <boost/filesystem.hpp>
+#ifdef _MSC_VER
 #include <boost/process.hpp>
+namespace ps = boost::process;
+#endif
 
 using std::string;
 using std::stringstream;
 
 namespace fs = boost::filesystem;
-namespace ps = boost::process;
 
 string
 prettyPath(const std::string & path) {

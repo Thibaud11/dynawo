@@ -9,6 +9,12 @@
 
 cmake_minimum_required(VERSION 2.6 FATAL_ERROR)
 
+if(${CMAKE_VERSION} VERSION_GREATER "3.15.0")
+  if(POLICY CMP0091)
+    cmake_policy(SET CMP0091 NEW)
+  endif()
+endif()
+
 project(zip)
 
 set(CMAKE_MODULE_PATH ${CMAKE_MODULE_PATH} "${CMAKE_CURRENT_SOURCE_DIR}/cmake")
@@ -17,6 +23,8 @@ set(LIBZIP_BUILD_SHARED TRUE CACHE BOOL "Build LibZIP as shared library.")
 set(LIBZIP_BUILD_STATIC TRUE CACHE BOOL "Build LibZIP as static library.")
 set(LIBZIP_BUILD_TESTS TRUE CACHE BOOL "Build LibZIP tests.")
 set(LIBZIP_BUILD_SAMPLES TRUE CACHE BOOL "Build LibZIP samples.")
+
+SET(MSVC_STATIC_RUNTIME_LIBRARY OFF CACHE BOOL "Choose either ON or OFF.")
 
 set(CMAKE_POSITION_INDEPENDENT_CODE ON)
 

@@ -28,14 +28,10 @@ using std::stringstream;
 namespace DYN {
 
 Timers::Timers() {
-#ifdef _DEBUG_
-  std::cerr << __func__ << "()\n";
-#endif
 }
 
 Timers::~Timers() {
 #ifdef _DEBUG_
-  std::cerr << __func__ << "()\n";
   std::map<std::string, double>::const_iterator itT;
   for (itT = timers_.begin(); itT != timers_.end(); ++itT) {
     std::cout << "TIMER[" << itT->first << "] = " << itT->second << " secondes en " << nbAppels_[itT->first] << " appels" << std::endl;
@@ -90,14 +86,6 @@ Timer::Timer(const std::string& name) :
 name_(name),
 timer_(),
 isStopped_(false) {
-}
-
-void
-Timer::start() {
-#ifdef _DEBUG_
-  timer_.restart();
-#endif
-  isStopped_ = false;
 }
 
 void
