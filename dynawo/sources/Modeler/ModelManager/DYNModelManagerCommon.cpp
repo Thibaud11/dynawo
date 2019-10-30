@@ -40,6 +40,47 @@ namespace DYN {
 
 static memoryManagerChars mmChars;  ///< instance of modelica chars manager : chars created and which should be deleted at the end of the execution
 
+
+template<typename T>
+modelica_boolean Less(T a, T b) {
+  return a < b;
+}
+
+template<typename T>
+modelica_boolean Greater(T a, T b) {
+  return a > b;
+}
+
+template<typename T>
+modelica_boolean LessEq(T a, T b) {
+  return a <= b;
+}
+
+template<typename T>
+modelica_boolean GreaterEq(T a, T b) {
+  return a >= b;
+}
+
+template<>
+modelica_boolean Less<double>(double a, double b) {
+  return DYN::doubleNotEquals(a, b) && a < b;
+}
+
+template<>
+modelica_boolean Greater<double>(double a, double b) {
+  return DYN::doubleNotEquals(a, b) && a > b;
+}
+
+template<>
+modelica_boolean LessEq<double>(double a, double b) {
+  return DYN::doubleEquals(a, b) || a < b;
+}
+
+template<>
+modelica_boolean GreaterEq<double>(double a, double b) {
+  return DYN::doubleEquals(a, b) || a > b;
+}
+
 void printLogToStdOut_(ModelManager *model, const std::string & message) {
   SubModel * sub = dynamic_cast<SubModel*> (model);
   if (sub == NULL)

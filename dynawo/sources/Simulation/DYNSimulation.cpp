@@ -205,6 +205,7 @@ nbLastTimeSimulated_(0) {
   setStopTime(jobEntry_->getSimulationEntry()->getStopTime());
   setActivateCriteria(jobEntry_->getSimulationEntry()->getActivateCriteria());
   setCriteriaStep(jobEntry_->getSimulationEntry()->getCriteriaStep());
+  setCurrentPrecision(jobEntry_->getSimulationEntry()->getPrecision());
 
   outputsDirectory_ = context_->getWorkingDirectory();
   if (jobEntry_->getOutputsEntry()) {

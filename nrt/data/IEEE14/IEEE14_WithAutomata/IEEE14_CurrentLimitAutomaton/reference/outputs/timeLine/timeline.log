@@ -6,16 +6,14 @@
 5.56622 | GEN____8_SM | PMIN : activation
 5.88109 | GEN____6_SM | PMIN : deactivation
 5.93211 | GEN____3_SM | PMIN : activation
-5.93211 | GEN____3_SM | PMIN : activation
-5.93211 | GEN____3_SM | PMIN : deactivation
 6.0641 | GEN____8_SM | PMIN : deactivation
 6.49719 | GEN____3_SM | PMIN : deactivation
 6.63305 | GEN____8_SM | PMIN : activation
 7.07687 | GEN____8_SM | PMIN : deactivation
 7.74091 | GEN____8_SM | PMIN : activation
 7.96514 | GEN____6_SM | PMIN : activation
-7.96514 | GEN____6_SM | PMIN : activation
-7.96514 | GEN____6_SM | PMIN : deactivation
+8.03677 | GEN____6_SM | PMIN : activation
+8.03677 | GEN____6_SM | PMIN : deactivation
 8.03677 | GEN____6_SM | PMIN : deactivation
 8.04303 | GEN____8_SM | PMIN : deactivation
 10.2605 | CLA_2_5 | CLA : order to change topology
