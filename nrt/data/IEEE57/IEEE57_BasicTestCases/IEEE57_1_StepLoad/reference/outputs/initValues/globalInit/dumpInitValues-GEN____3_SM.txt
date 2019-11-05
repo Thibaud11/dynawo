@@ -112,21 +112,6 @@ generator_Lambdaf0Pu                               =       1.080294
 generator_Lambdaq0Pu                               =      -0.077701
 generator_LdPPu                                    =       0.202000
 generator_LfPPu                                    =       0.200041
-<<<<<<< HEAD
-generator_LqPPu                                    =          0.202
-generator_MdPPu                                    =          2.018
-generator_MdPPuEfd                                 =              0
-generator_MqPPu                                    =          2.018
-generator_MrcPPu                                   =              0
-generator_P0Pu                                     =           -0.4
-generator_PGen0Pu                                  =            0.4
-generator_PNomAlt                                  =           1090
-generator_PNomTurb                                 =           1090
-generator_Pm0Pu                                    =      0.0367007
-generator_Q0Pu                                     =         0.0091
-generator_QGen0Pu                                  =        -0.0091
-generator_QStator0Pu                               =    -0.00773733
-=======
 generator_LqPPu                                    =       0.202000
 generator_MdPPu                                    =       2.018000
 generator_MdPPuEfd                                 =       0.000000
@@ -134,12 +119,12 @@ generator_MqPPu                                    =       2.018000
 generator_MrcPPu                                   =       0.000000
 generator_P0Pu                                     =      -0.400000
 generator_PGen0Pu                                  =       0.400000
-generator_PNom                                     =    1090.000000
+generator_PNomAlt                                  =    1090.000000
+generator_PNomTurb                                 =    1090.000000
 generator_Pm0Pu                                    =       0.036701
 generator_Q0Pu                                     =       0.009100
 generator_QGen0Pu                                  =      -0.009100
 generator_QStator0Pu                               =      -0.007737
->>>>>>> #504 Uniformize double precision, add a parameter in .jobs file to modify it, and stabilize unstable timeline message
 generator_RDPPu                                    =       0.010983
 generator_RQ1PPu                                   =       0.004211
 generator_RQ2PPu                                   =       0.068209

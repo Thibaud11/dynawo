@@ -112,17 +112,6 @@ generator_Lambdaf0Pu                               =       1.109434
 generator_Lambdaq0Pu                               =      -0.400231
 generator_LdPPu                                    =       0.202000
 generator_LfPPu                                    =       0.200041
-<<<<<<< HEAD
-generator_LqPPu                                    =          0.202
-generator_MdPPu                                    =          2.018
-generator_MdPPuEfd                                 =              0
-generator_MqPPu                                    =          2.018
-generator_MrcPPu                                   =              0
-generator_P0Pu                                     =        -2.3239
-generator_PGen0Pu                                  =         2.3239
-generator_PNomAlt                                  =           1090
-generator_PNomTurb                                 =           1090
-=======
 generator_LqPPu                                    =       0.202000
 generator_MdPPu                                    =       2.018000
 generator_MdPPuEfd                                 =       0.000000
@@ -130,8 +119,8 @@ generator_MqPPu                                    =       2.018000
 generator_MrcPPu                                   =       0.000000
 generator_P0Pu                                     =      -2.323900
 generator_PGen0Pu                                  =       2.323900
-generator_PNom                                     =    1090.000000
->>>>>>> #504 Uniformize double precision, add a parameter in .jobs file to modify it, and stabilize unstable timeline message
+generator_PNomAlt                                  =    1090.000000
+generator_PNomTurb                                 =    1090.000000
 generator_Pm0Pu                                    =       0.213301
 generator_Q0Pu                                     =       0.165500
 generator_QGen0Pu                                  =      -0.165500
